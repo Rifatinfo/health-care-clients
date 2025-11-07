@@ -13,7 +13,11 @@ const LoginForm = () => {
   const getFieldError = (fieldName: string) => {
     if (state && state.errors) {
       const error = state.errors.find((err: any) => err.field === fieldName);
-      return error.message;
+      if(error){
+         return error.message;
+      } else{
+         return null;
+      }
     } else {
       return null;
     }
