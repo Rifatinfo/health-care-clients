@@ -4,9 +4,11 @@ import { useActionState } from "react";
 import { Button } from "./ui/button";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
+import { registerPatient } from "@/services/auth/registerPatient";
 
 export const RegisterForm = () => {
-    const [state, formAction, isPending] = useActionState((currentState : any, formData : any) => {}, null);
+    const [state, formAction, isPending] = useActionState(registerPatient, null);
+    console.log(state, "state");
     
     return (
         <div>
@@ -62,8 +64,8 @@ export const RegisterForm = () => {
                     </div>
                     <FieldGroup className="mt-4">
                         <Field>
-                            <Button type="submit">
-                                Register
+                            <Button type="submit" disabled={isPending}>
+                               {isPending ? "creating ....." : " Register"}
                             </Button>
 
                             <FieldDescription className="px-6 text-center">
