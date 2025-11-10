@@ -1,29 +1,38 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
 import { registerPatient } from "@/services/auth/registerPatient";
+import { toast } from "sonner";
 
 export const RegisterForm = () => {
     const [state, formAction, isPending] = useActionState(registerPatient, null);
     console.log(state, "state");
     const getFieldError = (fieldName: string) => {
-    if (state && state.errors) {
-      const error = state.errors.find((err: any) => err.field === fieldName);
-      if(error){
-          return error.message;
-      }else{
-        return null;
-      }
-    } else {
-      return null;
+        if (state && state.errors) {
+            const error = state.errors.find((err: any) => err.field === fieldName);
+            if (error) {
+                return error.message;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
-  }
+
+    useEffect(() => {
+        if (state && !state.success && state.message) {
+            toast.error(state.message);
+        }
+    }, [state]);
+
+
     return (
         <div>
-            <form  action={formAction}>
+            <form action={formAction}>
                 <FieldGroup>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {/* Name */}
@@ -31,11 +40,11 @@ export const RegisterForm = () => {
                             <FieldLabel htmlFor="name">Full Name</FieldLabel>
                             <Input id="name" name="name" type="text" placeholder="John Doe" />
                             {
-                            getFieldError("name") && (
-                                <FieldDescription className="text-red-600">
-                                {getFieldError("name")}
-                                </FieldDescription>
-                            )
+                                getFieldError("name") && (
+                                    <FieldDescription className="text-red-600">
+                                        {getFieldError("name")}
+                                    </FieldDescription>
+                                )
                             }
                         </Field>
                         {/* Address */}
@@ -47,12 +56,12 @@ export const RegisterForm = () => {
                                 type="text"
                                 placeholder="123 Main St"
                             />
-                           {
-                            getFieldError("address") && (
-                                <FieldDescription className="text-red-600">
-                                {getFieldError("address")}
-                                </FieldDescription>
-                            )
+                            {
+                                getFieldError("address") && (
+                                    <FieldDescription className="text-red-600">
+                                        {getFieldError("address")}
+                                    </FieldDescription>
+                                )
                             }
                         </Field>
                         {/* Email */}
@@ -66,24 +75,24 @@ export const RegisterForm = () => {
                             />
 
                             {
-                            getFieldError("email") && (
-                                <FieldDescription className="text-red-600">
-                                {getFieldError("email")}
-                                </FieldDescription>
-                            )
+                                getFieldError("email") && (
+                                    <FieldDescription className="text-red-600">
+                                        {getFieldError("email")}
+                                    </FieldDescription>
+                                )
                             }
                         </Field>
                         {/* Password */}
                         <Field>
                             <FieldLabel htmlFor="password">Password</FieldLabel>
                             <Input id="password" name="password" type="password" />
-                             {
+                            {
                                 getFieldError("password") && (
                                     <FieldDescription className="text-red-600">
-                                    {getFieldError("password")}
+                                        {getFieldError("password")}
                                     </FieldDescription>
                                 )
-                                }
+                            }
                         </Field>
                         {/* Confirm Password */}
                         <Field className="md:col-span-2">
@@ -94,18 +103,18 @@ export const RegisterForm = () => {
                                 type="password"
                             />
                             {
-                            getFieldError("confirmPassword") && (
-                                <FieldDescription className="text-red-600">
-                                {getFieldError("confirmPassword")}
-                                </FieldDescription>
-                            )
+                                getFieldError("confirmPassword") && (
+                                    <FieldDescription className="text-red-600">
+                                        {getFieldError("confirmPassword")}
+                                    </FieldDescription>
+                                )
                             }
                         </Field>
                     </div>
                     <FieldGroup className="mt-4">
                         <Field>
                             <Button type="submit" disabled={isPending}>
-                               {isPending ? "creating ....." : " Register"}
+                                {isPending ? "creating ....." : " Register"}
                             </Button>
 
                             <FieldDescription className="px-6 text-center">
