@@ -2,6 +2,7 @@
 "use server";
 
 import z from "zod";
+import { loginUser } from "./loginUser";
 
 
 const registerValidationZodSchema = z.object({
@@ -21,10 +22,10 @@ const registerValidationZodSchema = z.object({
     path: ["confirmPassword"],
 });
 
-export const registerPatient = async (_currentState : any, formData : any) : Promise<any> => {
-  try{
+export const registerPatient = async (_currentState: any, formData: any): Promise<any> => {
+    try {
 
-         const validationData = {
+        const validationData = {
             name: formData.get('name'),
             address: formData.get('address'),
             email: formData.get('email'),
@@ -48,28 +49,33 @@ export const registerPatient = async (_currentState : any, formData : any) : Pro
                 )
             }
         }
-     const registerData = {
-        password : formData.get("password"),
-        patient : {
-            name : formData.get("name"),
-            email : formData.get("email"),
-            address : formData.get("address")
+        const registerData = {
+            password: formData.get("password"),
+            patient: {
+                name: formData.get("name"),
+                email: formData.get("email"),
+                address: formData.get("address")
+            }
         }
-     }
-     const newFormData = new FormData();
-     newFormData.append("data", JSON.stringify(registerData))
+        const newFormData = new FormData();
+        newFormData.append("data", JSON.stringify(registerData))
 
-     const res = await fetch("http://localhost:5000/api/v1/user/create-patient", {
-        method : "POST",
-        body : newFormData,
-     }).then(res => res.json());
+        const res = await fetch("http://localhost:5000/api/v1/user/create-patient", {
+            method: "POST",
+            body: newFormData,
+        });
 
-     console.log(res, "res");
+        const result = await res.json();
+        if (result.success) {
+            await loginUser(_currentState, formData);
+        }
+        return result;
 
-     return res;
-     
-  }catch(err){
-    console.log(err);
-    return {error : "Registration Fail" }
-  } 
+    } catch (error: any) {
+        if (error?.digest?.startsWith('NEXT_REDIRECT')) {
+            throw error;
+        }
+        console.log(error);
+        return { error: "Registration Fail" }
+    }
 }
