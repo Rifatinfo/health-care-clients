@@ -24,3 +24,6 @@ export const serverFetch = {
     put: async (endpoint : string,  options : RequestInit = {}) : Promise<Response> => serverFetchHelper(endpoint,{...options, method : "PUT"}),
     delete: async (endpoint : string,  options : RequestInit = {}) : Promise<Response> => serverFetchHelper(endpoint,{...options, method : "DELETE"}),
 }
+
+
+
