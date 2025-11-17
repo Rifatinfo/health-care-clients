@@ -1,8 +1,12 @@
+"use client"
 import InputFieldError from "@/components/shared/InputFieldError";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { createSpeciality } from "@/services/admin/specialitiesManagement";
+import { useActionState, useEffect } from "react";
+import { toast } from "sonner";
 
 interface ISpecialitiesFormDialogProps {
     open: boolean;
@@ -11,6 +15,17 @@ interface ISpecialitiesFormDialogProps {
 }
 
 const SpecialitiesFormDialog = ({ open, onClose, onSuccess }: ISpecialitiesFormDialogProps) => {
+      const [state, formAction, pending] = useActionState(createSpeciality, null);
+
+  useEffect(() => {
+    if (state && state?.success) {
+      toast.success(state.message);
+      onSuccess();
+      onClose();
+    } else if (state && !state.success) {
+      toast.error(state.message);
+    }
+  }, [state, onSuccess, onClose]);
     return (
         <div>
             <Dialog open={open} onOpenChange={onClose}>
