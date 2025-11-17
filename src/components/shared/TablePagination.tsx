@@ -27,6 +27,7 @@ const TablePagination = ({currentPage, totalPages} :  TablePaginationProps) => {
     if(totalPages <= 1){
        return null;
     }
+    
     return (
         <div className="flex item-center  justify-center gap-2">
             <Button

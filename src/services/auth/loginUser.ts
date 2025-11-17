@@ -7,6 +7,8 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { redirect } from "next/navigation";
 import z from "zod";
 import { setCookie } from "./tokenHandlers";
+import { serverFetch } from "@/lib/server-fetch";
+import { zodValidator } from "@/lib/zodValidator";
 
 const loginValidationZodSchema = z.object({
     email: z.email({
@@ -24,32 +26,25 @@ export const loginUser = async (_currentState: any, formData: any): Promise<any>
         const redirectTo = formData.get('redirect') || null;
         let accessTokenObject: null | any = null;
         let refreshTokenObject: null | any = null;
-        const loginData = {
+        const payload = {
             email: formData.get('email'),
             password: formData.get('password'),
         }
 
-        const validatedFields = loginValidationZodSchema.safeParse(loginData);
-
-        if (!validatedFields.success) {
-            return {
-                success: false,
-                errors: validatedFields.error.issues.map(issue => {
-                    return {
-                        field: issue.path[0],
-                        message: issue.message,
-                    }
-                })
-            }
+      
+        if(zodValidator(payload, loginValidationZodSchema).success === false){
+           return zodValidator(payload, loginValidationZodSchema);
         }
 
-        const res = await fetch("http://localhost:5000/api/v1/auth/login", {
-            method: "POST",
-            body: JSON.stringify(loginData),
-            headers: {
-                "Content-Type": "application/json",
-            },
+        const validatedPayload = zodValidator(payload, loginValidationZodSchema).data;
+
+        const res = await serverFetch.post("/auth/login", {
+            body: JSON.stringify(validatedPayload),
+            headers : {
+                "Content-Type" : "application/json"
+            }
         });
+
         const result = await res.json();
         const setCookieHeaders = res.headers.getSetCookie();
 
