@@ -33,6 +33,7 @@ const ManagementPageHeader = ({
             {action && (
                 <Button onClick={action.onClick}>
                     <Icon className="mr-2 h-4 w-4" />
+                    {action.label}
                 </Button>
             )}
             {children}

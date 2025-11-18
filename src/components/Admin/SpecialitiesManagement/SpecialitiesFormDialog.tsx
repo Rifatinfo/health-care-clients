@@ -26,6 +26,8 @@ const SpecialitiesFormDialog = ({ open, onClose, onSuccess }: ISpecialitiesFormD
       toast.error(state.message);
     }
   }, [state, onSuccess, onClose]);
+
+  
     return (
         <div>
             <Dialog open={open} onOpenChange={onClose}>
