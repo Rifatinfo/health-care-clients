@@ -14,15 +14,16 @@ const SpecialitiesManagementHeader = () => {
   const handleSuccess = () => {
     startTransition(() => {
       router.refresh();
-    })
-  }
+    });
+  };
   return (
-    <div>
+    <>
       <SpecialitiesFormDialog
         open={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
         onSuccess={handleSuccess}
       />
+
       <ManagementPageHeader
         title="Specialties Management"
         description="Manage Specialties information and details"
@@ -32,7 +33,7 @@ const SpecialitiesManagementHeader = () => {
           onClick: () => setIsDialogOpen(true),
         }}
       />
-    </div>
+    </>
   );
 };
 

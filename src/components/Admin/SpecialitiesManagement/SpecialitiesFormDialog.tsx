@@ -9,13 +9,17 @@ import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
 interface ISpecialitiesFormDialogProps {
-    open: boolean;
-    onClose: () => void;
-    onSuccess: () => void;
+  open: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
 }
 
-const SpecialitiesFormDialog = ({ open, onClose, onSuccess }: ISpecialitiesFormDialogProps) => {
-      const [state, formAction, pending] = useActionState(createSpeciality, null);
+const SpecialitiesFormDialog = ({
+  open,
+  onClose,
+  onSuccess,
+}: ISpecialitiesFormDialogProps) => {
+  const [state, formAction, pending] = useActionState(createSpeciality, null);
 
   useEffect(() => {
     if (state && state?.success) {
@@ -27,47 +31,44 @@ const SpecialitiesFormDialog = ({ open, onClose, onSuccess }: ISpecialitiesFormD
     }
   }, [state, onSuccess, onClose]);
 
-  
-    return (
-        <div>
-            <Dialog open={open} onOpenChange={onClose}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Add New Specialty</DialogTitle>
-                    </DialogHeader>
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Add New Specialty</DialogTitle>
+        </DialogHeader>
 
-                    <form action={formAction} className="space-y-4">
-                        <Field>
-                            <FieldLabel htmlFor="title">Title</FieldLabel>
-                            <Input id="title" name="title" placeholder="Cardiology" required />
-                            <InputFieldError field="title" state={state} />
-                        </Field>
+        <form action={formAction} className="space-y-4">
+          <Field>
+            <FieldLabel htmlFor="title">Title</FieldLabel>
+            <Input id="title" name="title" placeholder="Cardiology" required />
+            <InputFieldError field="title" state={state} />
+          </Field>
 
-                        <Field>
-                            <FieldLabel htmlFor="file">Upload Icon</FieldLabel>
+          <Field>
+            <FieldLabel htmlFor="file">Upload Icon</FieldLabel>
 
-                            <Input id="file" name="file" type="file" accept="image/*" />
-                            <InputFieldError field="file" state={state} />
-                        </Field>
+            <Input id="file" name="file" type="file" accept="image/*" />
+            <InputFieldError field="file" state={state} />
+          </Field>
 
-                        <div className="flex justify-end gap-2">
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={onClose}
-                                disabled={pending}
-                            >
-                                Cancel
-                            </Button>
-                            <Button type="submit" disabled={pending}>
-                                {pending ? "Saving..." : "Save Specialty"}
-                            </Button>
-                        </div>
-                    </form>
-                </DialogContent>
-            </Dialog>
-        </div>
-    );
+          <div className="flex justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              disabled={pending}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" disabled={pending}>
+              {pending ? "Saving..." : "Save Specialty"}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
 };
 
 export default SpecialitiesFormDialog;

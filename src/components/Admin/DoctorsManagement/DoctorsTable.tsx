@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { doctorsColumns } from "./doctorsColumns";
 import DeleteConfirmationDialog from "@/components/shared/DeleteConfirmationDialog";
-import { softDeleteDoctor } from "@/services/admin/specialitiesManagement";
 import { toast } from "sonner";
+import { softDeleteDoctor } from "@/services/admin/doctorManagement";
 
 interface DoctorsTableProps {
     doctors: IDoctor[];
