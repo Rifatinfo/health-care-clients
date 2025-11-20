@@ -9,6 +9,7 @@ import { doctorsColumns } from "./doctorsColumns";
 import DeleteConfirmationDialog from "@/components/shared/DeleteConfirmationDialog";
 import { toast } from "sonner";
 import { softDeleteDoctor } from "@/services/admin/doctorManagement";
+import DoctorViewDetailDialog from "./DoctorViewDetailDialog";
 
 interface DoctorsTableProps {
     doctors: IDoctor[];
@@ -20,7 +21,7 @@ const DoctorsTable = ({ doctors, specialities }: DoctorsTableProps) => {
     const router = useRouter();
     const [, startTransition] = useTransition();
     const [deletingDoctor, setDeletingDoctor] = useState<IDoctor | null>(null);
-    // const [viewingDoctor, setViewingDoctor] = useState<IDoctor | null>(null);
+    const [viewingDoctor, setViewingDoctor] = useState<IDoctor | null>(null);
     const [editingDoctor, setEditingDoctor] = useState<IDoctor | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
 
@@ -30,9 +31,9 @@ const DoctorsTable = ({ doctors, specialities }: DoctorsTableProps) => {
         });
     };
 
-    // const handleView = (doctor: IDoctor) => {
-    //     setViewingDoctor(doctor);
-    // };
+    const handleView = (doctor: IDoctor) => {
+        setViewingDoctor(doctor);
+    };
 
     const handleEdit = (doctor: IDoctor) => {
         setEditingDoctor(doctor);
@@ -62,7 +63,7 @@ const DoctorsTable = ({ doctors, specialities }: DoctorsTableProps) => {
             <ManagementTable
                 data={doctors}
                 columns={doctorsColumns}
-                // onView={handleView}
+                onView={handleView}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 getRowKey={(doctor) => doctor.id!}
@@ -80,11 +81,11 @@ const DoctorsTable = ({ doctors, specialities }: DoctorsTableProps) => {
                 }}
             />
 
-            {/* <DoctorViewDetailDialog
+            <DoctorViewDetailDialog
                 open={!!viewingDoctor}
                 onClose={() => setViewingDoctor(null)}
                 doctor={viewingDoctor}
-            /> */}
+            />
 
             {/* Delete Confirmation Dialog */}
             <DeleteConfirmationDialog
