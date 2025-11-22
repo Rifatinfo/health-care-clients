@@ -6,7 +6,7 @@ export interface NavItem {
     icon : string;
     badge?: string | number;
     description? : string;
-    roles : UserRole[]
+    roles : UserRole[];
 }
 
 export interface NavSection {
