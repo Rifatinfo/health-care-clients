@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { useActionState, useEffect, useState } from "react";
 import { createDoctor, updateDoctor } from "@/services/admin/doctorManagement";
 import { toast } from "sonner";
+
 interface IDoctorFormDialogProps {
     open: boolean;
     onClose: () => void;
@@ -28,7 +29,7 @@ interface IDoctorFormDialogProps {
     doctor?: IDoctor;
     specialities?: ISpecialty[]
 }
-
+ 
 const DoctorFormDialog = ({ open, onClose, onSuccess, doctor, specialities }: IDoctorFormDialogProps) => {
     const isEdit = !!doctor;
     const [selectedSpeciality, setSelectedSpeciality] = useState<string>("")
